@@ -9,7 +9,7 @@ namespace APIControllers.Models
     {
         IEnumerable<Reservation> Reservations { get; }
         Reservation this[int id] { get; }
-        Reservation AddReservatoin(Reservation reservatoin);
+        Reservation AddReservation(Reservation reservatoin);
         Reservation UpdateReservation(Reservation reservation);
         void DeleteReservation(int id);
     }
