@@ -13,9 +13,11 @@ namespace APIControllers
 {
     public class Startup
     {
+        //Enable the mvc framework and middleware components for devlopment 
        
         public void ConfigureServices(IServiceCollection services)
         {
+            // is used for instances that can be shared across the app, ideal for caching
             services.AddSingleton<IRepository, Repository>();
             services.AddControllersWithViews();
         }
@@ -27,15 +29,26 @@ namespace APIControllers
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts
+            }
 
+            // Adds middleware for redirecting HTTP Request for HTTPS.
+            app.UseHttpsRedirection(); 
+
+            // Enables static file serving for current request path.
+            app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
